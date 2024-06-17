@@ -2,11 +2,11 @@ const RoleModel = require("../models/Role");
 
 const verifyRole = (verifyRoleName) => {
   return async (req, res, next) => {
-    const role = await RoleModel.findById("666edcb37110aa7008b7f1d2", "name");
-    if (role.name === verifyRoleName) {
+    const role = await RoleModel.findById(req.userAuthInfo.role, "name");
+    if (verifyRoleName.includes(role.name)) {
       next();
     } else {
-      return res.sendStatus(403);
+      return res.status(403).json({ error: "Unauthorized Access" });
     }
   };
 };

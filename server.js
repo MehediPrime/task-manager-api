@@ -6,6 +6,7 @@ const adminRoutes = require("./routes/adminRoutes");
 
 //For authorization verification
 const { verifyRole } = require("./middleware/verifyRole");
+const { verifyToken } = require("./middleware/verifyToken");
 
 // //since it has not been call anywhere
 // require("./models/Role");
@@ -20,7 +21,7 @@ app.use("/api/auth", authRoute);
 // app.use("/api/common", authRoute);
 
 //Admin Router
-app.use("/api/admin", verifyRole("Admin"), adminRoutes);
+app.use("/api/admin", verifyToken(), verifyRole(["Admin"]), adminRoutes);
 
 // //Memeber Router
 // app.use("/api/member", authRoute);
