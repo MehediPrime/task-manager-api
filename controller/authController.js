@@ -7,7 +7,9 @@ const registration = async (req, res, next) => {
   try {
     const user = new UserModel({ name, email, password, designation, role });
     await user.save();
-    res.status(201).send("User registered");
+    res
+      .status(201)
+      .json({ message: "User registration successfully complete" });
   } catch (err) {
     res.status(400).json({ error: "Registration Failed! Try Again." });
   }
@@ -18,7 +20,7 @@ const login = async (req, res, next) => {
   try {
     const user = await UserModel.findOne({ username });
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).send("Invalid credentials");
+      return res.status(401).json({ error: "Invalid credentials" });
     }
     const accessToken = generateAccessToken({
       _id: user._id,

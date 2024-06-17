@@ -3,8 +3,9 @@ const mongoose = require("mongoose");
 
 const authRoute = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const supervisorRoutes = require("./routes/supervisorRoutes");
 
-//For authorization verification
+//For authorization verification from middleware
 const { verifyRole } = require("./middleware/verifyRole");
 const { verifyToken } = require("./middleware/verifyToken");
 
@@ -22,6 +23,13 @@ app.use("/api/auth", authRoute);
 
 //Admin Router
 app.use("/api/admin", verifyToken(), verifyRole(["Admin"]), adminRoutes);
+//Admin Router
+app.use(
+  "/api/supervisor",
+  verifyToken(),
+  verifyRole(["Supervisor", "Admin"]),
+  supervisorRoutes
+);
 
 // //Memeber Router
 // app.use("/api/member", authRoute);
